@@ -1,0 +1,20 @@
+[
+	{
+		"id": 2,
+		"nombre": "Lechuga",
+		"descrip": "Verdulería",
+		"precio": 200,
+		"img": "awr",
+		"codigo": 222,
+		"cantidad": 7
+	},
+	{
+		"id": 3,
+		"nombre": "Tomate",
+		"descrip": "Verdulería",
+		"precio": 110,
+		"img": "asd",
+		"codigo": 111,
+		"cantidad": 3
+	}
+]
