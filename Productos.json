@@ -1,6 +1,6 @@
 [
 	{
-		"id": 2,
+		"id": 1,
 		"nombre": "Lechuga",
 		"descrip": "Verdulería",
 		"precio": 200,
@@ -9,10 +9,10 @@
 		"cantidad": 7
 	},
 	{
-		"id": 3,
+		"id": 2,
 		"nombre": "Tomate",
 		"descrip": "Verdulería",
-		"precio": 110,
+		"precio": 300,
 		"img": "asd",
 		"codigo": 111,
 		"cantidad": 3

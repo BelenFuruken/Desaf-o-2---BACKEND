@@ -11,7 +11,8 @@ class ProductManager{
     async addProduct(title, description, price, thumbnail, code, stock){
         try{
             if(title === "" || description === "" || price === "" || thumbnail === "" || code === "" || stock ===""){
-                return console.log("Debe ingresar todos los campos requeridos!")
+                console.log("Debe ingresar todos los campos requeridos!")
+                return
             } 
             let todosLosProductos = await this.getProducts() 
             let existe = todosLosProductos.find((p)=>p.codigo === code)
@@ -33,18 +34,19 @@ class ProductManager{
                     cantidad: stock
                 })
                 await fs.writeFile(this.path, JSON.stringify(todosLosProductos, null, "\t"))
-                return console.log("Producto agregado correctamente")
+                console.log("Producto agregado correctamente")
+                return
             } 
         }catch(error){
-            console.log("Ocurrio un error al agregar el producto: " + error)
+            console.log("Ocurrió un error al agregar el producto: " + error)
         }     
     }
 
     async getProducts(){
         try {
             const productos = await fs.readFile(this.path, 'utf-8')
-            console.log(productos)
             if(productos.length>0){
+                //console.log(productos)
                 return JSON.parse(productos)
             }
             return []
@@ -65,8 +67,9 @@ class ProductManager{
                 let productoBuscado = todosLosProductos.filter(p => p.id === idIngresado)
                 if(productoBuscado.length>0){
                     return console.log(productoBuscado)
-                }
+                }else{
                 return console.log("No existe el producto")
+                }
             }
             return console.log("Todavía no hay nigún producto")
         }catch(error){
@@ -82,6 +85,7 @@ class ProductManager{
             return console.log("No existe el id ingresado")
         }
         await fs.writeFile(this.path, JSON.stringify(nuevaLista, null, "\t"))
+        return console.log("Producto eliminado correctamente")
         }catch(eror){
             console.log("Ocurrió un error al borrar el producto: " + idIngresado)
         }
@@ -90,13 +94,13 @@ class ProductManager{
     async updateProduct(idActualizar, campoActualizar, nuevoValor){
         try{
         let todosLosProductos = await this.getProducts()
-        let existe = todosLosProductos.find(p => p.id === idActualizar)
-        if (existe){
-            todosLosProductos[idActualizar].campoActualizar = nuevoValor
-            await fs.writeFile(this.path, JSON.stringify(todosLosProductos, null, "\t"))
-            return
-        }
-        console.log("No existe dicho id")
+        let index = todosLosProductos.findIndex((p)=>p.id === idActualizar)
+        if (index === -1){
+            throw new Error("No existe el id seleccionado") 
+        } 
+        todosLosProductos[index][campoActualizar] = nuevoValor
+        await fs.writeFile(this.path, JSON.stringify(todosLosProductos, null, "\t"))
+        return todosLosProductos[index]
         }catch(error){
             console.log("Ocurrió un error al actualizar los datos: " + error)
         }
@@ -106,7 +110,8 @@ class ProductManager{
 let prueba1 = new ProductManager("Productos.json")
 prueba1.addProduct("Tomate", "Verdulería", 110, "asd", 111, 3)
 prueba1.addProduct("Lechuga", "Verdulería", 200, "awr", 222, 7)
-//prueba1.getProductById(2)
-prueba1.getProducts()
-prueba1.deleteProduct(1)
+//prueba1.getProductById(1)
+//prueba1.deleteProduct(3)
 prueba1.updateProduct(2,"precio",300)
+.then((rta)=>{console.log("Actualizado correstamente: "+rta)})
+.catch((e)=>{console.log(e)})
